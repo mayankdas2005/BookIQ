@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route,useLocation } from 'react-router-dom'
 import HomePage from "./pages/HomePage.jsx"
 import Login from "./pages/LogIn.jsx"
 import Settings from './pages/Settings.jsx'
@@ -10,13 +10,16 @@ import Events from "./pages/Events.jsx"
 import Vendor from "./pages/vendor/Vendor.jsx"
 import Trains from "./pages/Trains.jsx"
 
-function App() {
+function AppWrapper() {
+  const location = useLocation();
+
+  // Routes where Navbar should NOT appear
+  const hideNavbarRoutes = ["/login", "/signup"];
 
   return (
-    <BrowserRouter>
-      <Navbar/>
+    <>
+      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
       <Routes>
-
         <Route path='/' element={<HomePage/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<Signup/>} />
@@ -26,11 +29,20 @@ function App() {
         <Route path='/Trains' element={<Trains/>} />
         <Route path='/ListYourEvent' element={<Vendor/>} />
       </Routes>
-    
-    
-    
-    
-    
+    </>
+  );
+}
+
+
+
+
+
+
+function App() {
+
+  return (
+    <BrowserRouter>
+      <AppWrapper/>
     </BrowserRouter>
   )
     
