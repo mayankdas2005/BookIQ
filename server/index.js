@@ -1,6 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
+import userRoutes from "./routes/user.route.js"
 
 
 
@@ -19,6 +20,13 @@ mongoose.connect(URL).then(()=>{
     console.log(error)
 })
 
+
+
+
+app.use("/api/user",userRoutes)
+
 app.listen(PORT, ()=>{
     console.log(`Listening on port:${PORT}`)
 })
+
+
