@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Vendor = () => {
+const Trains = () => {
   return (
     <div>
-      Vendor
+      TrainTickets
     </div>
   )
 }
 
-export default Vendor
+export default Trains

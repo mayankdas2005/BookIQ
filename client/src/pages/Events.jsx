@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Vendor = () => {
+const Events = () => {
   return (
     <div>
-      Vendor
+      Events
     </div>
   )
 }
 
-export default Vendor
+export default Events

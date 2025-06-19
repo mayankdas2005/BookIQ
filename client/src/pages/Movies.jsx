@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Vendor = () => {
+const Movies = () => {
   return (
     <div>
-      Vendor
+      Movies
     </div>
   )
 }
 
-export default Vendor
+export default Movies
