@@ -49,7 +49,7 @@ const Login = () => {
           </button>
         </div>
         <p className="text-center text-sm text-gray-500 mt-6">
-            Not a member? <a href="#" className="text-indigo-600 hover:underline">Start a 14 day free trial</a>
+            Dont have an account? <a href="/signup" className="text-indigo-600 hover:underline">Create one</a>
         </p>
 
 
