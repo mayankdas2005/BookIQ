@@ -1,62 +1,104 @@
-import React from 'react'
+import {useState} from 'react'
 import logo from "../assets/logo2.png"
 import googleLogo from "../assets/icons8-google-logo.svg"
 import githubLogo from "../assets/icons8-github.svg"
+import { axiosInstance } from '../lib/axios.js'
+import Alert from '@mui/material/Alert'
 
 
 const Login = () => {
+  const [formData, setFormData] = useState({})
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState(false)
+ 
+
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.id]: e.target.value});
+
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try{
+      const res = await axiosInstance.post("/api/auth/login",formData)
+      console.log(res)
+      setSubmitted(true)
+      setError(false)
+      setTimeout(()=>setSubmitted(false),3000)
+
+    }
+    catch(error){
+      setSubmitted(true)
+      setError(true)
+      setTimeout(()=>setSubmitted(false),3000)
+
+    }
+  }
+
+
   return (
-    <div className='min-h-screen flex flex-col justify-center items-center px-4 bg-gray-50'>
-      <div className='max-w-md w-full bg-white p-8 rounded-lg shadow-md'>
-        <div className="flex justify-center mb-6">
-          <img src={logo} className="h-8" alt="Logo" />
+    <>
+
+      {submitted && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md px-4">
+          {!error ? (
+            <Alert severity="success">Login successful</Alert>
+          ) : (
+            <Alert severity="error">Invalid email or password</Alert>
+          )}
         </div>
-        <h2 className="text-center text-2xl font-bold mb-6">
-            Sign in to your account
-        </h2>
-        <form className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email address</label>
-              <input type="email" className="mt-1 w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input type="password" className="mt-1 w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-            </div>
-        </form>
-        <div className="flex items-center justify-between">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2 mt-4" />
-            <span className="mt-4 text-sm text-gray-600">Remember me</span>
-          </label>
-          <a href="#" className="mt-4 text-sm text-indigo-600 hover:underline">Forgot password?</a>
+      )}
+    
+      <div className='min-h-screen flex flex-col justify-center items-center px-4 bg-gray-50'>
+        <div className='max-w-md w-full bg-white p-8 rounded-lg shadow-md'>
+          <div className="flex justify-center mb-6">
+            <img src={logo} className="h-8" alt="Logo" />
+          </div>
+          <h2 className="text-center text-2xl font-bold mb-6">
+              Sign in to your account
+          </h2>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email address</label>
+                <input onChange={handleChange} id="email" type="email" className="mt-1 w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <input onChange={handleChange} id="password" type='password' className="mt-1 w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <button type="submit"  className="w-full mt-4 py-2 px-4 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Sign in</button>
+          </form>
+          <div className="flex items-center justify-between">
+            <label className="flex items-center">
+              <input type="checkbox" className="mr-2 mt-4" />
+              <span className="mt-4 text-sm text-gray-600">Remember me</span>
+            </label>
+            <a href="#" className="mt-4 text-sm text-indigo-600 hover:underline">Forgot password?</a>
+          </div>
+        
+          <div className="flex items-center justify-center my-4">
+            <div className="border-t border-gray-300 flex-grow"></div>
+            <span className="mx-2 text-gray-500 text-sm">Or continue with</span>
+            <div className="border-t border-gray-300 flex-grow"></div>
+          </div>
+
+          <div className="flex gap-4">
+            <button className="flex items-center justify-center w-1/2 border border-gray-300 rounded py-2 hover:bg-gray-50">
+              <img src={googleLogo} alt="Google" className="w-5 h-5 mr-2" />
+              Google
+            </button>
+            <button className="flex items-center justify-center w-1/2 border border-gray-300 rounded py-2 hover:bg-gray-50">
+              <img src={githubLogo} alt="GitHub" className="w-5 h-5 mr-2" />
+              GitHub
+            </button>
+          </div>
+          <p className="text-center text-sm text-gray-500 mt-6">
+              Dont have an account? <a href="/signup" className="text-indigo-600 hover:underline">Create one</a>
+          </p>
         </div>
-        <button type="submit" className="w-full mt-4 py-2 px-4 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Sign in</button>
-        <div className="flex items-center justify-center my-4">
-          <div className="border-t border-gray-300 flex-grow"></div>
-          <span className="mx-2 text-gray-500 text-sm">Or continue with</span>
-          <div className="border-t border-gray-300 flex-grow"></div>
-        </div>
-
-        <div className="flex gap-4">
-          <button className="flex items-center justify-center w-1/2 border border-gray-300 rounded py-2 hover:bg-gray-50">
-            <img src={googleLogo} alt="Google" className="w-5 h-5 mr-2" />
-            Google
-          </button>
-          <button className="flex items-center justify-center w-1/2 border border-gray-300 rounded py-2 hover:bg-gray-50">
-            <img src={githubLogo} alt="GitHub" className="w-5 h-5 mr-2" />
-            GitHub
-          </button>
-        </div>
-        <p className="text-center text-sm text-gray-500 mt-6">
-            Dont have an account? <a href="/signup" className="text-indigo-600 hover:underline">Create one</a>
-        </p>
-
-
-
-
       </div>
-    </div>
+    </>  
   )
 }
 
