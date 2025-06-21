@@ -30,7 +30,8 @@ export const login = async(req, res) => {
         const validPassword = bcrypt.compareSync(password, correctUser.password)
         if(!validPassword) return res.status(401).json({message:"Invalid credentials"});
         const token = jwt.sign({id:correctUser._id},process.env.JWT_SECRET)
-        res.cookie("acces_token", token, {httpOnly:true, expires: new Date(Date.now() + 3600000)}).status(200).json({message:"Login Succesfull"})
+        const {password:hashedPass, ...rest} = correctUser._doc; 
+        res.cookie("acces_token", token, {httpOnly:true, expires: new Date(Date.now() + 3600000)}).status(200).json({message:"Login Succesfull",value: correctUser})
          
 
 
